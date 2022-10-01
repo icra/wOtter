@@ -7,6 +7,8 @@
 3. Run 'conda env create -f environment.yml' in your terminal
 4. Run 'conda activate otter' in your terminal
 5. Run 'pip install -e .' in your terminal
-5. Start a jupyter notebook server by running 'jupyter notebook' in your terminal
-6. Run all cells, open your created map at "results" folder and edit at wish
+6. Create 'results' folder in main directory
+7. Download 'https://mega.nz/file/1DdDlLjR#Am1QYD_7JytT76pc48jzoYOJZE6xb1s-hYjzFSYWvDw' file, and extract it to the main directory
+8. Start a jupyter notebook server by running 'jupyter notebook' in your terminal
+9. Open file "run_gruph.ipynb" under notebooks file, run all cells, open your created map at "results" folder and edit at wish
 
