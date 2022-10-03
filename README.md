@@ -1,14 +1,31 @@
-# OtterEU
- Model to describe spatial variation of wastewater-based contaminants in Europe 
+# wOtterEU
 
-## Steps
-1. Install conda (https://www.anaconda.com/)
-2. In your terminal, go to the project folder
-3. Run 'conda env create -f environment.yml' in your terminal
-4. Run 'conda activate otter' in your terminal
-5. Run 'pip install -e .' in your terminal
-6. Create 'results' folder in main directory
-7. Download 'https://mega.nz/file/1DdDlLjR#Am1QYD_7JytT76pc48jzoYOJZE6xb1s-hYjzFSYWvDw' file, and extract it to the main directory
-8. Start a jupyter notebook server by running 'jupyter notebook' in your terminal
-9. Open file "run_gruph.ipynb" under notebooks file, run all cells, open your created map at "results" folder and edit at wish
+General description, ...
 
+## Setup Python environment
+To create the environment with all packages needed, simply run
+```
+conda env create -f environment.yml
+conda activate otter
+pip install -e .
+```
+Then, download the compressed data [here](https://mega.nz/file/1DdDlLjR#Am1QYD_7JytT76pc48jzoYOJZE6xb1s-hYjzFSYWvDw), and unzip the file at the main directory.
+Finally, create a folder at the main directory called ```results```.
+
+## Run locally
+
+Before starting to do anything, make sure you have activated the conda environment. Please, keep in mind that a computer with minimum 16GB of RAM is needed.
+
+```
+conda activate otter
+```
+### Add your own raster files and generate graph model from scratch (OPTIONAL)
+Work in progress ...
+
+### Generate pollutant map
+ In the `notebooks/run_graph.ipynb`  notebook, you will find how to visualize the results of the simulation on a dynamic map. You can open the file by simply running
+```
+jupyter notebook
+```
+and selecting the file.
+Run all the cells, and a  ```html ``` file will be created at the ```results/``` folder.  This file contains a map created with the [kepler.gl](https://kepler.gl/) library. This map is not finalized, meaning that you have to open the file with any browser and edit it to show all the information as you want. 
