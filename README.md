@@ -9,7 +9,7 @@ conda env create -f environment.yml
 conda activate otter
 pip install -e .
 ```
-Then, download the compressed data [here](https://mega.nz/file/1DdDlLjR#Am1QYD_7JytT76pc48jzoYOJZE6xb1s-hYjzFSYWvDw), and unzip the file at the main directory.
+Then, download the compressed data [here](https://mega.nz/file/QTV11QgL#6sxcA-bBNfcroTg2EThsSVnhGBskYgNjX5bpahGG_3E), and unzip the file at the main directory.
 Finally, create a folder at the main directory called ```results```.
 
 ## Run locally
