@@ -1,8 +1,6 @@
 # Input and output files
-*.csv
-*.pkl
-*.html
-hydrobasins_europe/
+data/
+results/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
