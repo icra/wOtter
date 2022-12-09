@@ -28,4 +28,4 @@ Work in progress ...
 jupyter notebook
 ```
 and selecting the file.
-Run all the cells, and a  ```html ``` file will be created at the ```results/``` folder.  This file contains a map created with the [kepler.gl](https://kepler.gl/) library. This map is not finalized, meaning that you have to open the file with any browser and edit it to show all the information as you want. 
+Run all the cells, and some files will be created at the ```results/``` folder. These files have to be uploaded to the [kepler.gl](https://kepler.gl/) web page, which is the tool used to create this map.  
