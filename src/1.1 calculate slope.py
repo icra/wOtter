@@ -2,13 +2,14 @@ from osgeo import gdal
 import numpy
 import os
 from time import time
+from src.library import shapefile_raster_functions
+
 
 
 
 directory = os.path.join(os.getcwd(), 'data')
-print(directory)
-# input rasters
 
+# input rasters
 height_raster_location = os.path.join(directory, "Raw data/3s_height.tif")
 direction_raster_upscale_location = os.path.join(directory, "Raw data/15s_directions.tif")
 
@@ -38,14 +39,9 @@ minimum_slope = 5  # this gives a lower bound for the slope that is allowed
                    # (minimum_slope/scale_factor * 100% gives the unit in percentages)
 
 # load height and directions
-print('1')
 height_raster = gdal.Open(height_raster_location)
-print('2')
 height_matrix = height_raster.ReadAsArray().astype(numpy.int16)
-print('3')
 rows, columns = numpy.shape(height_matrix)
-
-print('aacsdfsdfdsfv')
 
 # Reserving memory for the matrices
 height_difference = numpy.zeros([rows, columns], dtype=numpy.int16)  # int 16 reduces memory use
@@ -61,10 +57,6 @@ candidates[:, 0:columns-1:1] = height_matrix[:, 0:columns-1:1] - height_matrix[:
 indicators = candidates >= 0
 height_difference[indicators] = candidates[indicators]
 direction_matrix[indicators] = 1
-
-
-print('aaaaaaaaaaaaaaaaaaa')
-
 
 # south-east
 candidates = minus_one_canvas
@@ -119,9 +111,7 @@ height_matrix = None  # no longer required
 # calculate the slopes
 
 # distances of the cell with directions
-distances = cell_dimensions(height_raster_location)  # function that gives cell dimensions using a reference raster
-
-print('bbbbbbbbbbbbbbbbbbbbbbbbbb')
+distances = shapefile_raster_functions.cell_dimensions(height_raster_location)  # function that gives cell dimensions using a reference raster
 
 # to speed up runtime, calculate the inverse of the distance directly. This allows for multiplication instead of
 # division when calculating the slopes.
@@ -160,9 +150,6 @@ slopes_15_s = slopes.reshape([new_rows, downscale_factor, new_columns, downscale
 slopes = None
 slopes_15_s = slopes_15_s.mean(3, dtype=numpy.int16).mean(1, dtype=numpy.int16)  # downscale the resolution by taking the mean of the elements
 slopes_15_s[slopes_15_s < minimum_slope] = minimum_slope
-
-
-print('ccccccccccccccccccccc')
 
 
 # Rasterize

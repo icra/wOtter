@@ -1,7 +1,6 @@
 import math
 import os
 import networkx
-from shapefile_raster_functions import contaminant_to_shapefile
 import numpy
 import pandas
 import pickle

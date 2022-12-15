@@ -1,7 +1,9 @@
 import os
-import graph_functions
 import pickle
 import pandas
+
+from src.library import graph_functions
+
 
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
 

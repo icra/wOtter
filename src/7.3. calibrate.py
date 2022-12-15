@@ -4,10 +4,11 @@ import pandas
 import pickle
 import os
 import time
-import shapefile_raster_functions
 from return_contaminant import simulated_contaminants, error_formulae
 from scipy.optimize import minimize
-import graph_functions
+
+from src.library import graph_functions
+
 
 # Load data
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')

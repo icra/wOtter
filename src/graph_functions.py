@@ -4,12 +4,18 @@ import numpy
 import math
 import networkx
 import pandas
-import src.library.shapefile_raster_functions as shapefile_raster_functions
+#import src.library.shapefile_raster_functions as shapefile_raster_functions
 from osgeo import gdal
 from time import time
 import pickle
 
 
+def test():
+    """
+    test function for printing
+    """
+    print('aaaaaaa')
+    pass
 
 def add_RT_lakes(river_graph: networkx.DiGraph, sorted_graph: object, RT_name: str, discharge_name: str = 'flow_HR'
                  ) -> None:

@@ -3,7 +3,7 @@ import pandas
 import os
 
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # changes the discharge of some rivers as specified by the hydrorivers flow excel file.
 hydrorivers_location = os.path.join(directory, "Raw data/HydroSHEDS/HydroRIVERS_v10_eu.shp")

@@ -4,6 +4,7 @@ import fiona
 import shutil
 import os
 
+
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
 
 # inputs

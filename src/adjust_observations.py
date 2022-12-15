@@ -1,3 +1,5 @@
+import os
+
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
 
 # input locations

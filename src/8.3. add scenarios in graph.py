@@ -2,7 +2,9 @@ import pickle
 from time import time
 import os
 import geopandas as gpd
-import graph_functions as gf
+
+from src.library import graph_functions
+
 
 # Load data
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
@@ -74,7 +76,7 @@ if loaded_graph:
 
     print("Loading scenarios...")
 
-    gf.add_scenario(river_graph, shp_rivers, scen_names=scen_names, all_scenarios=all)
+    graph_functions.add_scenario(river_graph, shp_rivers, scen_names=scen_names, all_scenarios=all)
 
     print("Copernicus scenarios with RT added in graph.")
 

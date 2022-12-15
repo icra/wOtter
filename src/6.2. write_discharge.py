@@ -1,9 +1,10 @@
 import geopandas
-import graph_functions
-import shapefile_raster_functions as sh
 from osgeo import gdal, ogr
 import numpy
 import os
+
+from src.library import shapefile_raster_functions
+
 
 
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
@@ -25,7 +26,7 @@ temporary_AGG_WWTP_location = os.path.join(directory, "AGG_WWTP_temp.shp")
 output_location = os.path.join(directory, "AGG_WWTP_df_no_treatment.csv")
 
 # create a raster that is land
-land_raster = sh.shapefile_to_raster(land_shapefile_location, reference_raster_location, land_raster_location)
+land_raster = shapefile_raster_functions.shapefile_to_raster(land_shapefile_location, reference_raster_location, land_raster_location)
 
 # open the shapefile of the contaminants
 AGG_WWTP = ogr.Open(AGG_WWTP_location, 1)  # the 1 signifies editing mode
@@ -52,7 +53,7 @@ for feature in AGG_WWTP_layer:
             pt_x = pt.GetY()
             pt_y = pt.GetX()
         # give_pixel converts the coordinates to the correct raster pixel numbers
-        x_location, y_location = sh.give_pixel([pt_x, pt_y], reference_raster)
+        x_location, y_location = shapefile_raster_functions.give_pixel([pt_x, pt_y], reference_raster)
         # save the location of the shapefile geometry in the raster
         feature.SetField('lat_pixel', x_location)
         feature.SetField('long_pixel', y_location)
@@ -88,7 +89,7 @@ output.GetRasterBand(1).WriteArray(ocean_and_river_matrix)
 output = None
 
 # the function below finds the closest discharge point for the AGG WWTP raster in the river_ocean raster.
-discharge_matrix = sh.find_discharge(temporary_AGG_WTTP_raster_location, river_land_temp_raster_location,
+discharge_matrix = shapefile_raster_functions.find_discharge(temporary_AGG_WTTP_raster_location, river_land_temp_raster_location,
                                      maximum_radius=18, precision=1)
 discharge_matrix = discharge_matrix.transpose()
 ocean_raster_matrix = numpy.transpose(ocean_raster_matrix)

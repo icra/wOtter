@@ -1,10 +1,12 @@
 import pickle
-import shapefile_raster_functions as sh
-from graph_functions import print_graph
 from osgeo import gdal
 import numpy
 import pandas
 import os
+
+from src.library import graph_functions
+from src.library import shapefile_raster_functions
+
 
 
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
@@ -41,7 +43,7 @@ pixel_loc = numpy.zeros([df_entries]) - 10
 for j in range(df_entries):
     i = df_entries - j - 1  # allows for dropping elements without skipping over numbers
     long, lat = data['longitude'].loc[i], data['latitude'].loc[i]
-    lat_nr, long_nr = sh.give_pixel([lat, long], reference_raster)
+    lat_nr, long_nr = shapefile_raster_functions.give_pixel([lat, long], reference_raster)
     found = False
     if data['pollutant'][i] > -1:  # excludes nans
         if 0 <= lat_nr <= rows:
@@ -68,8 +70,8 @@ temp_discharge_raster.SetGeoTransform(reference_raster.GetGeoTransform())
 temp_discharge_raster = None
 
 # find closest river points
-print_graph(graph_location, [], reference_raster_location, river_raster_location)
-river_discharge = sh.find_discharge(temp_discharge_location, river_raster_location, maximum_radius=3, precision=0.5)
+graph_functions.print_graph(graph_location, [], reference_raster_location, river_raster_location)
+river_discharge = shapefile_raster_functions.find_discharge(temp_discharge_location, river_raster_location, maximum_radius=3, precision=0.5)
 river_discharge = river_discharge.transpose()
 
 # move observation points to closest river

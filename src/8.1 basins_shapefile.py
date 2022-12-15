@@ -1,14 +1,14 @@
-import graph_functions
-import shapefile_raster_functions
 from osgeo import gdal, ogr, osr
 import numpy
-import shapefile_raster_functions as sh
+import library.shapefile_raster_functions as sh
 import networkx
 import pickle
 from time import time
 import os
 import geopandas
-import graph_functions as gf
+
+from src.library import graph_functions
+
 
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
 

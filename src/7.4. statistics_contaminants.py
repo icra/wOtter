@@ -1,5 +1,3 @@
-from shapefile_raster_functions import contaminant_to_shapefile
-from graph_functions import print_graph
 import numpy
 import pandas
 import pickle
@@ -7,6 +5,8 @@ from return_contaminant import simulated_contaminants, error_formulae
 import matplotlib.pyplot as plt
 import os
 import time
+from src.library import shapefile_raster_functions
+
 
 # Load data
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
@@ -116,4 +116,4 @@ dataframe['Error'] = (dataframe['Prediction'] - dataframe['Observations'])**2
 dataframe['Error'] = dataframe['Error'] / numpy.mean(dataframe['Error'])
 dataframe['weighted error'] = dataframe['Error'] * numpy.sqrt(discharges)
 dataframe['weighted error'] = dataframe['weighted error'] / numpy.mean(dataframe['weighted error'])
-contaminant_to_shapefile(dataframe, reference_raster_location, output_name=calibrated_nonadapted_location)
+shapefile_raster_functions.contaminant_to_shapefile(dataframe, reference_raster_location, output_name=calibrated_nonadapted_location)

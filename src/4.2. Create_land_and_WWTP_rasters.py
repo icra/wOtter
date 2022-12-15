@@ -1,8 +1,9 @@
-import shapefile_raster_functions as sh
 import numpy
 from osgeo import gdal
 from scipy import ndimage
 import os
+from src.library import shapefile_raster_functions
+
 
 directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
 # input locations
@@ -19,11 +20,11 @@ output_countries_raster = os.path.join(directory, "certain_land.tif")
 output_location = os.path.join(directory, "Population_treated.tif")
 
 # rasterize WWTP shapefile using the treated pe attribute
-sh.point_shapefile_sum_to_raster(input_shapefile_location, reference_raster_location,
+shapefile_raster_functions.point_shapefile_sum_to_raster(input_shapefile_location, reference_raster_location,
                                  output_name=output_WWTP_location, attributes=["treated PE"])
 
 # rasterize the country shapefile, where 1 is land and 0 is ocean.
-land_matrix = sh.shapefile_to_raster(countries, reference_raster_location, output_countries_raster, option=0)
+land_matrix = shapefile_raster_functions.shapefile_to_raster(countries, reference_raster_location, output_countries_raster, option=0)
 
 # create a land matrix that has slightly less land
 land_matrix = 1000 * numpy.where(land_matrix == 1, 1, 0)  # land tiles are 1000
@@ -43,7 +44,7 @@ output = None
 # it falls inside a basin when the script 'zonal statistics' is run.
 
 # find closest land
-closest_land = sh.find_discharge(output_WWTP_location, output_land_location, maximum_radius=8, precision=0.5)
+closest_land = shapefile_raster_functions.find_discharge(output_WWTP_location, output_land_location, maximum_radius=8, precision=0.5)
 closest_land = closest_land.transpose()
 rows, columns = numpy.shape(closest_land)
 
