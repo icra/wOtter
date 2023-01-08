@@ -1,4 +1,5 @@
 # wOtterEU
+<img width="889" alt="Captura" src="https://user-images.githubusercontent.com/49274979/211218395-eb230286-abc4-40c5-acee-9fafcd025839.PNG">
 
 General description, ...
 
