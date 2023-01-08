@@ -9,7 +9,7 @@ from src.library import shapefile_raster_functions
 
 
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input locations
 data_location = os.path.join(directory, "Wilkinson_z_normalized_adapted.csv")

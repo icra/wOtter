@@ -9,8 +9,8 @@ from src.library import shapefile_raster_functions
 
 
 # Load data
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
-directory2 = os.path.join(os.path.dirname(os.getcwd()), 'results')
+directory = os.path.join(os.getcwd(), 'data')
+directory2 = os.path.join(os.getcwd(), 'results')
 
 # output
 calibrated_nonadapted_location = os.path.join(directory2, "calibrated_nonadapted.shp")

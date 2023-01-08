@@ -1,13 +1,12 @@
 from osgeo import gdal
 import numpy
+from src.library import shapefile_raster_functions
 import networkx
 import pickle
 import os
 import geopandas
+from src.library import graph_functions as gf
 from time import time
-from src.library import graph_functions
-from src.library import shapefile_raster_functions
-
 
 directory = os.path.join(os.getcwd(), 'data')
 
@@ -55,37 +54,33 @@ frame_shapefile.to_file(shapefile_id_location)  # Save the new shapefile
 # is
 reference_raster = gdal.Open(reference_raster_location)
 
-# put the unique river ids into a raster
 
+
+# put the unique river ids into a raster
 river_id = shapefile_raster_functions.shapefile_to_raster(shapefile_id_location, reference_raster_location, id_location,
                                   attribute_name_list=["ID"], option=0, scale=scale_factor,
-                                  include_ind=False, data_type=gdal.GDT_Int32)
+                                  include_ind=False, data_type=gdal.GDT_Byte)
+# convert the raster to 15 seconds
+rows, columns = numpy.shape(river_id)
+rows = int(rows/scale_factor)
+columns = int(columns/scale_factor)
+river_id_matrix = river_id.reshape([rows, scale_factor, columns, scale_factor])
 
 # put the discharges into a raster
 river_discharge = shapefile_raster_functions.shapefile_to_raster(rivers_shapefile, reference_raster_location, discharge_location,
                                          attribute_name_list=["DIS_AV_CMS"], option=0, scale=scale_factor,
                                          include_ind=False)
+river_discharge = river_discharge.reshape([rows, scale_factor, columns, scale_factor])
+
 # put the river indicators into a raster
 river_indicator = shapefile_raster_functions.shapefile_to_raster(rivers_shapefile, reference_raster_location, indicator_location, option=0,
                                          scale=scale_factor, data_type=gdal.GDT_Byte)
+reduced_river_matrix = river_indicator.reshape([rows, scale_factor, columns, scale_factor]).sum(3).sum(1)
 
 # put the lakes into a raster with their id and their total volume.
 shapefile_raster_functions.shapefile_to_raster(lakes_shapefile_location, reference_raster_location, lakes_location,
-                       attribute_name_list=['Hylak_id', 'Vol_total'], data_type=gdal.GDT_Float32)
+                       attribute_name_list=['Hylak_id', 'Vol_total'], data_type=gdal.GDT_Int16)
 
-
-# convert 3 second river raster to 15 seconds
-rows, columns = numpy.shape(river_indicator)
-rows = int(rows/scale_factor)
-columns = int(columns/scale_factor)
-
-# the following code converts the matrix into a 4 dimensional matrix. reduced_river_matrix[i, :, j, :] contains the
-# scale_factor by scale_factor submatrix of the high resolution raster corresponding to pixel [i,j] in the low
-# resolution raster. .sum(3).sum(1) sums these pixels, such that we have in each low resolution pixel the sum of
-# scale_factor by scale_factor high resolution pixels.
-reduced_river_matrix = river_indicator.reshape([rows, scale_factor, columns, scale_factor]).sum(3).sum(1)
-river_id_matrix = river_id.reshape([rows, scale_factor, columns, scale_factor])
-river_discharge = river_discharge.reshape([rows, scale_factor, columns, scale_factor])
 
 # If after downscaling, a pixel would contain more than 2 river pixels in the higher resolution raster, we consider it a
 # river in the downscaled raster as well
@@ -144,7 +139,7 @@ for i in range(rows):
 
             # residence time for rivers
             slope_val = slopes_matrix[i, j]
-            RT = graph_functions.calculate_residence_time(discharge_val, slope_val, distance)
+            RT = gf.calculate_residence_time(discharge_val, slope_val, distance)
             discharge_hour = discharge_val * 3600
             long, lat = shapefile_raster_functions.give_pixel(current_cell_number, reference_raster, reverse=1)
             # add node with all the data
@@ -169,7 +164,7 @@ for node in river_graph:
 river_graph.remove_nodes_from(remove_list)
 
 sorted_graph = list(networkx.topological_sort(river_graph))  # gives a list where nodes first in the list are preceding
-graph_functions.add_RT_lakes(river_graph, sorted_graph, "RT_HR")  # this adds the residence times of lakes
+gf.add_RT_lakes(river_graph, sorted_graph, "RT_HR")  # this adds the residence times of lakes
 
 # saving the output
 open_file = open(graph_location, "wb")
@@ -193,7 +188,7 @@ os.remove(lakes_location)
 # This creates additional otuput
 
 # rivers from the graph
-graph_functions.print_graph(graph_location, [], reference_raster_location, rivers_from_graph_location)
+gf.print_graph(graph_location, [], reference_raster_location, rivers_from_graph_location)
 
 # create 15s river raster
 gtiff_driver = gdal.GetDriverByName('GTiff')

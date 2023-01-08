@@ -3,7 +3,7 @@ import numpy
 import os
 
 # Load data
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input
 AGG_WWTP_location = rivers_shapefile = os.path.join(directory, "AGG_WWTP.shp")

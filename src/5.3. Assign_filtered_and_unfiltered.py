@@ -3,7 +3,7 @@ import pandas
 import os
 import numpy
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input files
 country_basins_location = os.path.join(directory, "Basins_cut.shp")

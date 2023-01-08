@@ -4,7 +4,7 @@ import os
 
 from src.library import graph_functions
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 graph_location = os.path.join(directory, "river_graph.pkl")
 topological_sort_location = os.path.join(directory, "sorted_river_list.pkl")

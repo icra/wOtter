@@ -7,7 +7,7 @@ from src.library import graph_functions
 
 
 # Load data
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input
 river_graph_location = os.path.join(directory, "river_graph.pkl")

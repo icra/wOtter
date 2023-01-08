@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import time
 
 # Load data
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
-directory2 = os.path.join(os.path.dirname(os.getcwd()), 'results')
+directory = os.path.join(os.getcwd(), 'data')
+directory2 = os.path.join(os.getcwd(), 'reusults')
 
 # output
 written_model_location = os.path.join(directory2, "written_model.pkl")

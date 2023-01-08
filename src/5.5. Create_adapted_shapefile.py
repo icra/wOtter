@@ -4,7 +4,7 @@ import numpy
 import pandas
 import os
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # inputs
 AGG_location = os.path.join(directory, "AGG.shp")

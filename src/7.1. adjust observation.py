@@ -2,7 +2,7 @@ import pandas
 import numpy
 import os
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input
 observation_df_location = os.path.join(directory, "Raw data/Wilkinson_z_normalized.csv")

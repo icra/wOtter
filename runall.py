@@ -64,9 +64,10 @@ for script_index in range(starting_step, len(script_list)):
 runtime_df = pandas.DataFrame(recorded_runtimes)
 runtime_df.to_csv('runtimes.csv')
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
-result_location = os.path.join(os.path.dirname(os.getcwd()), 'results', general_name_extension)
-#os.mkdir(result_location)
+directory = os.path.join(os.getcwd(), 'data')
+
+result_location = os.path.join(os.getcwd(), 'results', general_name_extension)
+os.mkdir(result_location)
 main_outputs = ['AGG_WWTP_df.csv', 'reference_raster.tif', 'rivers_from_graph.tif', 'river_graph.pkl',
                 'sorted_river_list.pkl']
 advanced_outputs = ['river_basins.shx', 'river_basins.prj', 'river_basins.dbf', 'river_basins.shp',
@@ -91,6 +92,7 @@ if compress_all:
     zf.close()
 
 intermediate_files = os.listdir(directory)
+"""
 intermediate_files.remove('Raw data')
 if intermediate_output:
     zipfile_name = 'zipped_intermediate_results'
@@ -112,4 +114,4 @@ for file in intermediate_files:
         except:
             pass  # will occur if the file does not exist or is in use
 
-
+"""

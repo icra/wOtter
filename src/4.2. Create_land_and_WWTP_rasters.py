@@ -5,7 +5,7 @@ import os
 from src.library import shapefile_raster_functions
 
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 # input locations
 input_shapefile_location = os.path.join(directory, "WWTP.shp")
 reference_raster_location = os.path.join(directory, "Raw data/country_reference_raster.tif")

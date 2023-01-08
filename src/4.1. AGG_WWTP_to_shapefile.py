@@ -7,7 +7,7 @@ import pandas
 import os
 
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # load the inputs
 agglomerations_location = os.path.join(directory, "Raw data/AGG.csv")

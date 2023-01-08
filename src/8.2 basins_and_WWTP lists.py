@@ -5,7 +5,7 @@ import pandas
 from src.library import graph_functions
 
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input files
 graph_location = os.path.join(directory, 'river_graph.pkl')

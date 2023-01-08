@@ -6,6 +6,7 @@ import statsmodels.api as sm
 import sys
 import os
 
+
 def merge_rows(array, row_index, basin_list, depth):
     """"Function takes the current row and combines it with a basin in the same parent-basin with the lowest
      population"""
@@ -61,7 +62,7 @@ def merge_rows(array, row_index, basin_list, depth):
     return array, basin_list, found_basin
 
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # inputs
 basins_location = os.path.join(directory, "basin_with_filt_unfilt.shp")
@@ -147,7 +148,8 @@ parameters = result.params
 parameters = pandas.DataFrame({'Country': parameters.index, 'treat_multiplier': parameters.values})
 country_data = geopandas.read_file(country_shapefile)
 country_data = pandas.merge(country_data, parameters, left_on="CNTR_ID", right_on="Country")
-country_data = country_data[["Country", "CNTR_ID", "geometry", "treat_multiplier"]]
+country_data = country_data[["CNTR_ID", "geometry", "treat_multiplier"]]
+country_data = country_data.rename(columns={"CNTR_ID": "Country"})
 try:
     country_data.to_file(output_shapefile_location)
 except (FileExistsError, DriverIOError):

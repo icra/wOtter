@@ -1,7 +1,7 @@
 import pandas
 import os
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input and output
 data_frame_location = os.path.join(directory, "AGG_WWTP_df_no_treatment.csv")

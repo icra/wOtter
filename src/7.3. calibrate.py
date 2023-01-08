@@ -11,8 +11,8 @@ from src.library import graph_functions
 
 
 # Load data
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
-directory2 = os.path.join(os.path.dirname(os.getcwd()), 'results')
+directory = os.path.join(os.getcwd(), 'data')
+directory2 = os.path.join(os.getcwd(), 'results')
 
 # outputs
 last_location = os.path.join(directory2, 'last.npy')

@@ -2,7 +2,7 @@ import pandas
 import os
 
 # Load data
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input
 

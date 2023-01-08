@@ -1,10 +1,10 @@
 from osgeo import ogr
 from rasterstats import zonal_stats
 import fiona
-from area import area
+from src.library import area
 import os
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # inputs
 basin_location = os.path.join(directory, "Basins_cut.shp")  # this will also become the output
@@ -36,7 +36,7 @@ for basin in basin_layer:
     basin.SetField('population', stats_pop[basin_id])
     basin.SetField('treated_p', stats_treated[basin_id])
     geom = basin.geometry()
-    area_km = 0.000001 * area(geom.ExportToJson())
+    area_km = 0.000001 * area.area(geom.ExportToJson())
     basin.SetField("Area", area_km)
     try:
         pop_dens = stats_pop[basin_id] / area_km

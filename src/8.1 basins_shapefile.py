@@ -10,7 +10,7 @@ import geopandas
 from src.library import graph_functions
 
 
-directory = os.path.join(os.path.dirname(os.getcwd()), 'data')
+directory = os.path.join(os.getcwd(), 'data')
 
 # input files
 direction_raster_location = os.path.join(directory, "15s_directions.tif")  # directions hydroRIVERS shapefile

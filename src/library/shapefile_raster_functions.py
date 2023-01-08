@@ -743,8 +743,6 @@ def crop_rasters(raster_locations: list, upper_left_x: float = -10**9, upper_lef
 
 
     rasters = [gdal.Open(raster_locations[i]) for i in range(len(raster_locations))]
-    lower_right_max_x = -10000000000
-    lower_right_max_y = 10000000000
     for raster in rasters:  # this loop crops the bounds additionally if one raster is too small for the custom bounds
 
         transform = raster.GetGeoTransform()
