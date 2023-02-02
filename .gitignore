@@ -1,6 +1,6 @@
-# Input and output files
-data/
+# Output files
 results/
+data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
