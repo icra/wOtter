@@ -40,4 +40,4 @@ Once the simulation is over, generate the pollutant map.
 jupyter notebook
 ```
 and selecting the file.
-Run all the cells, and some files will be created at the ```results/``` folder. These files have to be uploaded to the [kepler.gl](https://kepler.gl/) web page, which is the tool used to create this map.  
+Run all the cells, and some files will be created at the ```results/``` folder. These files have to be uploaded to the [kepler.gl](https://kepler.gl/) web page, which is the tool used to create this map. Then, customize your map following the ```instructions/``` folder.
