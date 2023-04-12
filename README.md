@@ -38,3 +38,7 @@ jupyter notebook
 ```
 and selecting the file.
 Run all the cells, and some files will be created at the ```results/``` folder. These files have to be uploaded to the [kepler.gl](https://kepler.gl/) web page, which is the tool used to create this map. Then, customize your map following the ```instructions/``` folder.
+
+### Replication
+To replicate the tables and figures in the article, run the scripts located in the ```Replication/``` folder. You will find more detailed information inside.
+
