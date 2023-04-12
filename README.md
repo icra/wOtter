@@ -9,9 +9,6 @@ This should probably be your first step. Go to ```examples/``` and open the .htm
 
 ## Setup Python environment
 To create the environment with all packages needed, simply run
-
-## Setup Python environment
-To create the environment with all packages needed, simply run
 ```
 conda env create -f environment.yml
 conda activate otter
