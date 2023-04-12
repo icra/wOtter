@@ -10,7 +10,6 @@ from time import time
 import pickle
 
 
-
 def add_RT_lakes(river_graph: networkx.DiGraph, sorted_graph: object, RT_name: str, discharge_name: str = 'flow_HR'
                  ) -> None:
     """
@@ -32,6 +31,8 @@ def add_RT_lakes(river_graph: networkx.DiGraph, sorted_graph: object, RT_name: s
                     discharge_name]
             else:
                 river_graph.nodes[i][RT_name] = 0
+        if river_graph.nodes[i][RT_name] < 0:
+            print(river_graph.nodes[i][RT_name])
     pass
 
 
@@ -70,7 +71,7 @@ def calculate_residence_time(discharge: float, slope: float, distance: float) ->
 
 
 def simulate_waste_water(graph_location: object, contamination_df: pandas.DataFrame, sorted_river: object,
-                         liter_per_equivalent: int = 150) -> networkx.DiGraph:
+                         liter_per_equivalent: int = 190) -> networkx.DiGraph:
     """
     simulate_waste_water takes a contamination dataframe and propagates water coming from the treatment plants. It
     adjusts the discharge according to these water outflows.
@@ -716,7 +717,7 @@ def find_largest_contamination_sites(graph_location: object, count: int, minimal
     return nodes_accepted
 
 
-def add_scenario(river_graph, shp_rivers, scen_names: list = [], all_scenarios: int = 0) -> None:
+def add_scenario(river_graph, shp_rivers, scen_names: list) -> None:
     """
      This function takes a river graph, given by the HydroRIVER id, and adds the equivalent flow values of the
      scenarios required which are extracted from the shapefile. It also computes the RT equivalent value.
@@ -727,55 +728,52 @@ def add_scenario(river_graph, shp_rivers, scen_names: list = [], all_scenarios: 
      :all_scenarios: int: 1 if all the scenarios needs to be added, 0 otherwise.
      :return: None: The graph is updated with scenarios.
      """
-    # progress bar while adding scenarios
-    bar = progressbar.ProgressBar(maxval=len(river_graph.nodes), widgets=[progressbar.Bar('=', '[', ']'), ' ',
-                                                                          progressbar.Percentage()])
-    bar.start()
-
     # Transform graph to csv to merge with shapefile.
     river_csv = graph_to_csv(river_graph, "temp.csv")
     # HYRIV_ID from graph are shapefile HYRIV_ID - 1.
     river_csv["HYRIV_ID"] += 1
+    fields = scen_names + ["HYRIV_ID"]
+    shp_rivers = shp_rivers[fields]
     # Merge shapefile and graph data to optimize the code.
     merged_df = pandas.merge(river_csv, shp_rivers, left_on="HYRIV_ID", right_on="HYRIV_ID")
-
-    # Add scenarios
-    if all_scenarios == 0:
-        num_scenarios = len(scen_names)
-    else:
-        # in our case the variables starting with f contains the scenario flow values.
-        names = shp_rivers.columns.tolist()
-        scen_names = list(filter(lambda x: x.startswith("f"), names))
-        num_scenarios = len(scen_names)
-
     for i in range(len(merged_df)):
-        bar.update(i + 1)
         pixel_number = merged_df["pixel_number"][i]
-        for k in range(num_scenarios):
+        for k in range(len(scen_names)):
             flow = scen_names[k]  # scenario name.
-            flow_value = merged_df[flow][i]  # river scenario flow.
+            flow_value = merged_df[flow].iloc[i]  # river scenario flow.
             # Avoid None flow problems.
             try:
                 flow_value = float(flow_value)
             except (ValueError, TypeError):
                 flow_value = river_graph.nodes[pixel_number]['flow_HR']
-
+            river_graph.nodes[pixel_number][flow] = flow_value * 3600
             # Minimum flow value 0.01 to allow calculation of RT.
             if flow_value < 0.01:
                 flow_value = 0.01
             # Assign flow value.
-            river_graph.nodes[pixel_number][flow] = flow_value
             RT = "RT_" + flow
             # Compute and assign RT value.
             slope = river_graph.nodes[pixel_number]['slope']
             distance = river_graph.nodes[pixel_number]['cell_distance']
             river_graph.nodes[pixel_number][RT] = calculate_residence_time(flow_value, slope, distance)
-    bar.finish()
-    pass
+
+    raise_warning = False
+    remove_list = []
+    for node in river_graph:
+        try:
+            river_graph.nodes[node][scen_names[0]]
+        except:
+            remove_list.append(node)
+            raise_warning = True
+    for pixel in remove_list:
+        river_graph.remove_node(pixel)
+    if raise_warning:
+        print("some nodes were removed because they were not included in the scenario")
+    return river_graph
 
 
 def absorb_raster(river_graph: networkx.DiGraph, raster_location: str, attribute_names: list = [],
-                  datatype=numpy.double) -> networkx.DiGraph:
+                  datatype=numpy.double, band_numbers: list = [], alternative_names: list = []) -> networkx.DiGraph:
     """
      This code takes a raster and a river graph, and puts the attributes of the raster specified by attribute_names into
      the river_graph.
@@ -786,6 +784,10 @@ def absorb_raster(river_graph: networkx.DiGraph, raster_location: str, attribute
      descriptions of the band as seen for instance in QGIS.
      :return: river graph with new attributes according to the attribute_names and the raster.
      """
+    if band_numbers and attribute_names:
+        print("specify either band_number or attribute_names. Not both")
+    if len(band_numbers) != len(alternative_names):
+        print("Please provide as many names as bands")
 
     list_of_raster_matrices = []  # matrices with values to absorb
     ordered_names = []  # orders the attribute_names in order of appearance.
@@ -801,6 +803,9 @@ def absorb_raster(river_graph: networkx.DiGraph, raster_location: str, attribute
 
         if len(list_of_raster_matrices) != len(attribute_names):
             raise ValueError('Some attribute names were not found')
+    if band_numbers:
+        for band_number in band_numbers:
+            list_of_raster_matrices.append(raster.GetRasterBand(band_number).ReadAsArray().flatten())
 
     # write raster values to the graph
     for node in river_graph:
@@ -808,6 +813,10 @@ def absorb_raster(river_graph: networkx.DiGraph, raster_location: str, attribute
             array = numpy.array([1], dtype=datatype)
             array[0] = numpy.asarray(list_of_raster_matrices[i][node], dtype=datatype)
             river_graph.nodes[node][ordered_names[i]] = array[0]
+        for i in range(len(alternative_names)):
+            array = numpy.array([1], dtype=datatype)
+            array[0] = numpy.asarray(list_of_raster_matrices[i][node], dtype=datatype)
+            river_graph.nodes[node][alternative_names[i]] = array[0]
 
     return river_graph
 
@@ -929,7 +938,7 @@ def contaminators_benefit_cost(basin_graph: networkx.DiGraph, nodes: list, conta
     sorted_river_list.reverse()  # reverse list to run in reverse topological order (downstream to upstream)
     basin_graph.nodes[sorted_river_list[0]][rem] = 1  # most downstream cell has value 1
     RT = "RT_HR"
-    dis = "RT_Flow"
+    dis = "flow_HR"
     if scenario_number != '':
         RT = "RT_" + scenario_number
         dis = scenario_number
@@ -1026,7 +1035,7 @@ def contaminators_benefit_cost(basin_graph: networkx.DiGraph, nodes: list, conta
     contamination_df = contamination_df.take(indexes_to_keep)
     return benefit, cost, discharges, contamination_df
 
-def calc_runoff_max_after_parents(basin_graph: networkx.DiGraph, contamination_df: pandas.DataFrame, parameters: list,
+def calc_runoff_max_after_parents(river_graph: networkx.DiGraph, contamination_df: pandas.DataFrame, parameters: list,
                                   limit_cont: float, global_min: float, scenario: str ='', children_number: int = 0)\
                                   -> list:
     """
@@ -1049,7 +1058,7 @@ def calc_runoff_max_after_parents(basin_graph: networkx.DiGraph, contamination_d
      of treatment plants.
      """
     excretion, attenuation, filt_eff, primary_eff, secondary_eff, tertiary_eff = parameters
-    pixel_list = list(networkx.topological_sort(basin_graph))
+    pixel_list = list(networkx.topological_sort(river_graph))
     if scenario == '':
         cont = "Contaminant"
         RT = "RT_HR"
@@ -1334,15 +1343,15 @@ def run_model(river_graph: networkx.DiGraph, sorted_river_list: list, contaminat
     excretion, attenuation, filt_eff, primary_eff, secondary_eff, tertiary_eff = parameters
 
     if scenario == '':
-        cont = "Contaminant"
+        cont = "absolute load"
         RT = "RT_HR"
         dis = "flow_HR"
-        rel_cont = "Relative Contaminant"
+        rel_cont = "concentration"
     else:
-        cont = "Contaminant " + scenario
+        cont = "absolute load " + scenario
         RT = "RT_" + scenario
         dis = scenario
-        rel_cont = "Relative contaminant " + scenario
+        rel_cont = "concentration " + scenario
 
     if output_field_name != '':
         cont = "Contaminant " + output_field_name
@@ -1407,6 +1416,12 @@ def simple_load(file_location):
     file = pickle.load(open_file)
     open_file.close()
     return file
+
+def simple_save(file, file_location):
+    open_file = open(file_location, "wb")
+    pickle.dump(file, open_file)
+    open_file.close()
+    pass
 
 def create_basin_lists(river_graph, ordered_basins_location='', save=True):
     if ordered_basins_location =='' and save:

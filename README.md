@@ -9,15 +9,12 @@ This should probably be your first step. Go to ```examples/``` and open the .htm
 
 ## Setup Python environment
 To create the environment with all packages needed, simply run
-
-## Setup Python environment
-To create the environment with all packages needed, simply run
 ```
 conda env create -f environment.yml
 conda activate otter
 pip install -e .
 ```
-Then, download the compressed data [here](https://mega.nz/file/QTV11QgL#6sxcA-bBNfcroTg2EThsSVnhGBskYgNjX5bpahGG_3E), and unzip the file at the main directory.
+Then, download the compressed data [here](https://mega.nz/file/hCNgWTDR#Z-VnCG10yJl9UCtgF-yIw4on3jhZT2gquXnT9v6heLw), and unzip the file at the main directory.
 Finally, create a folder at the main directory called ```results```.
 
 ## Run locally
@@ -40,4 +37,8 @@ Once the simulation is over, generate the pollutant map.
 jupyter notebook
 ```
 and selecting the file.
-Run all the cells, and some files will be created at the ```results/``` folder. These files have to be uploaded to the [kepler.gl](https://kepler.gl/) web page, which is the tool used to create this map.  
+Run all the cells, and some files will be created at the ```results/``` folder. These files have to be uploaded to the [kepler.gl](https://kepler.gl/) web page, which is the tool used to create this map. Then, customize your map following the ```instructions/``` folder.
+
+### Replication
+To replicate the tables and figures in the article, run the scripts located in the ```Replication/``` folder. You will find more detailed information inside.
+
