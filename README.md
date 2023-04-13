@@ -1,7 +1,7 @@
 # wOtterEU
 <img width="889" alt="Captura" src="https://user-images.githubusercontent.com/49274979/211218395-eb230286-abc4-40c5-acee-9fafcd025839.PNG">
 
-General description, ...
+wOtter is a new tool used to predict micro contamination of rivers as a consequence of wastewater discharge. This github page presents the user-friendly and fast code that researchers and practitioners alike can use and adapt. The tool is written in Python, and models rivers as graph networks with each node representing a section of a river. Each node can store and retrieve information, allowing for simple manipulation of the river network and simple extraction of data. Additionally, wOtter includes a library of functions for pre and post processing of data. The library facilitates extraction of information from the model and facilitates representing model outcomes. The source code is designed to run swiftly, such that simulations and calibrations that require many executions can be performed on a standard laptop. 
 
 
 ## Open example
