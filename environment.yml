@@ -7,6 +7,7 @@ dependencies:
   - geopandas-base=0.11.1
   - pandas=1.5.0
   - libgdal=3.4.0
+  - gdal=3.4.0
   - pandas=1.5.0
   - scikit-learn=1.1.2
   - pickleshare=0.7.5

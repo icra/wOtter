@@ -14,7 +14,7 @@ conda env create -f environment.yml
 conda activate otter
 pip install -e .
 ```
-Then, download the compressed data [here](https://mega.nz/file/hCNgWTDR#Z-VnCG10yJl9UCtgF-yIw4on3jhZT2gquXnT9v6heLw), and unzip the file at the main directory.
+Then, download the compressed data [here](https://wotter.icradev.cat/data.zip), and unzip the file at the main directory. This will create a new ```data``` folder. 
 Finally, create a folder at the main directory called ```results```.
 
 ## Run locally
@@ -25,7 +25,7 @@ Before starting to do anything, make sure you have activated the conda environme
 conda activate otter
 ```
 ### Use your own raster files and generate graph model from scratch (OPTIONAL)
-If you want to perform all the steps of the simulation, modify the source code or change the raster files, you will have to download the data [here](https://mega.nz/file/JLdjTS4Z#2kgA3S60tn-bpMvbrulXUgN4Bae5RKR4KCS70Me4hH4) and unzip it inside your previously downloaded and unzipped ```data/``` folder (Warning: the unzipped file weighs 40GB, and the simulation takes about 3 hours). Then, from your root folder, run
+If you want to perform all the steps of the simulation, modify the source code or change the raster files, you will have to download the data [here](https://wotter.icradev.cat/Raw_data.zip) and unzip it inside your previously downloaded and unzipped ```data/``` folder (Warning: the unzipped file weighs 10GB, and the simulation takes about 3 hours. A computer with more than 32GB RAM is recommended for this step). Now a new ```Raw data/``` folder should be created inside ```data/``` folder. Then, from your root folder, run
 ```
 python .\runall.py
 ```
