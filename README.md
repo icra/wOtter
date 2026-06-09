@@ -25,7 +25,7 @@ Before starting to do anything, make sure you have activated the conda environme
 conda activate otter
 ```
 ### Use your own raster files and generate graph model from scratch (OPTIONAL)
-If you want to perform all the steps of the simulation, modify the source code or change the raster files, you will have to download the data [here](https://wotter.icradev.cat/Raw_data.zip) and unzip it inside your previously downloaded and unzipped ```data/``` folder (Warning: the unzipped file weighs 10GB, and the simulation takes about 3 hours. A computer with more than 32GB RAM is recommended for this step). Now a new ```Raw data/``` folder should be created inside ```data/``` folder. Then, from your root folder, run
+If you want to perform all the steps of the simulation, modify the source code or change the raster files, you will have to download the data [here](https://drive.google.com/file/d/1a7cIa1y8e5Dc3JF38YbQhNXPj2WpwXKL) and unzip it inside your previously downloaded and unzipped ```data/``` folder (Warning: the unzipped file weighs 10GB, and the simulation takes about 3 hours. A computer with more than 32GB RAM is recommended for this step). Now a new ```Raw data/``` folder should be created inside ```data/``` folder. Then, from your root folder, run
 ```
 python .\runall.py
 ```
